@@ -79,8 +79,16 @@ var UIController = (function(){
             newHtml = html.replace("%id%", obj.id);
             newHtml = newHtml.replace("%description%", obj.description);
             newHtml = newHtml.replace("%value%", obj.value);
-            document.querySelector(element).insertAdjacentHTML("beforeend", newHtml);
-            
+            document.querySelector(element).insertAdjacentHTML("beforeend", newHtml);          
+        },
+        clearField: function(){
+            var fields;
+            fields = document.querySelectorAll(DOMStrings.inputDescription + ", "+ DOMStrings.inputValue);
+            var fieldsArr = Array.prototype.slice.call(fields);
+            fieldsArr.forEach((element) => {
+                element.value = ""; 
+            });
+            fieldsArr[0].focus();
         }
     };
 })();
@@ -105,6 +113,7 @@ var controller = (function(budgetCtrl, UICtrl){
 
         newItem = budgetController.addItem(input.type, input.description, input.value);
         UIController.addListItem(newItem, input.type);
+        UIController.clearField();
              /*get the field item OK;
                add the item to the bidget controller
                add the item to the ui
