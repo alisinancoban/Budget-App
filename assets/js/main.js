@@ -115,7 +115,6 @@ var UIController = (function(){
         expensesPercentageLabel: '.item__percentage',
         dataLabel: '.budget__title--month'
 
-
     };
     var formatNumber = function(num, type){
         var numSplit, int, dec, type;
@@ -130,6 +129,13 @@ var UIController = (function(){
         dec = numSplit[1];
         return (type === 'exp' ? '-' : '+') + ' ' + int + '.' + dec;
     };
+
+    var nodeListForEach = function(list, callback){
+        for(var i = 0; i < list.length; i++){
+            callback(list[i], i);
+        }
+    };
+
     return {
         addListItem: function(obj, type){
             var html, newHtml, element;
@@ -147,7 +153,14 @@ var UIController = (function(){
             document.querySelector(element).insertAdjacentHTML("beforeend", newHtml);          
         },
         changeType: function(){
-
+            var fields;
+            fields = document.querySelectorAll(DOMStrings.inputType + ',' +
+                                               DOMStrings.inputDescription + ',' +
+                                               DOMStrings.inputValue);
+            nodeListForEach(fields, function(cur){
+                cur.classList.toggle('red-focus');
+            });
+            document.querySelector(DOMStrings.inputButton).classList.toggle('red');
         },
         clearField: function(){
             var fields;
@@ -175,11 +188,6 @@ var UIController = (function(){
             var fields;
             fields = document.querySelectorAll(DOMStrings.expensesPercentageLabel);
 
-            var nodeListForEach = function(list, callback){
-                for(var i = 0; i < list.length; i++){
-                    callback(list[i], i);
-                }
-            };
             nodeListForEach(fields, function(current, index){
                 
                 current.textContent = percentages[index] > 0 ?  percentages[index] + '%' : "---";
